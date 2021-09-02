@@ -51,6 +51,7 @@ class ReadStataFile:
             elif flag_variable_found == 1 and flag_delimiter == 1 and line.strip() == ";" :
                 #print("variable not found !!!")
                 break;
+        obj.close()
         return labels 
 
     def get_col_label(self,variable_name):
