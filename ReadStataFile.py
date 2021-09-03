@@ -41,9 +41,13 @@ class ReadStataFile:
             elif line.lower().find(variable_name.lower()) >0 and flag_delimiter == 1:
                 flag_variable_found = 1
                 #print("variable found !!!")
-            elif flag_variable_found == 1 and flag_delimiter == 1 and  line.lower().find(variable_name.lower()) ==-1 and len(line.strip()) >0 and line.strip() != ";"  :
+            elif flag_variable_found == 1 and flag_delimiter == 1 and  line.lower().find(variable_name.lower()) ==-1 and len(line.strip()) >0 and line.strip() != ";" and  len(line.split('\"')) >1   :
                 my_split = line.split('\"')    
-                my_var = int(my_split[0].strip())
+                my_var_string = my_split[0].strip()
+                if self.is_number(my_var_string):
+                    my_var = float(my_var_string)
+                else:
+                    my_var = my_var_string
                 my_label = my_split[1].strip()
                 labels[my_var]=my_label
                 
@@ -67,3 +71,10 @@ class ReadStataFile:
               df[col].replace(my_dict,inplace=True)
         df.rename(columns=self.col_dict,inplace=True)
         return df
+
+    def is_number(self,string):
+        try:
+            float(string)
+            return True
+        except ValueError:
+            return False
